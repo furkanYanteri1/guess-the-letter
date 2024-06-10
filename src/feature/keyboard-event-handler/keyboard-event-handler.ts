@@ -1,4 +1,5 @@
 import { EventBus, GuessedLetterEvent, WrongLetterEvent } from "../../core";
+import { PlaySoundEvent } from "../../core/events/play-sound-event/play-sound-event";
 
 class KeyboardEventHandler {
   private _letter: { key: string; code: string } = { key: "", code: "" };
@@ -18,6 +19,14 @@ class KeyboardEventHandler {
 
   handleEvent(event: KeyboardEvent) {
     if (event.repeat) {
+      return;
+    }
+
+    if (event.code === "Space") {
+      EventBus.getInstance().publish(
+        "play-sound",
+        new PlaySoundEvent({ key: this._letter.id })
+      );
       return;
     }
 

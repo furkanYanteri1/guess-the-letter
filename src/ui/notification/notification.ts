@@ -6,6 +6,7 @@ class Notification extends BaseUIElement {
   private _color: string = "";
   private _opacity = 0.75;
   private _shouldAnimate = false;
+  private _hintText = "Press Space to listen again.";
 
   constructor(screen: Screen) {
     super(screen);
@@ -43,6 +44,17 @@ class Notification extends BaseUIElement {
       this.screen.canvas.width,
       this.screen.canvas.height
     );
+
+    // Draw hint text if the color is for "wrong-letter"
+    if (this._color === "255, 0, 123") {
+      this.screen.context.font = "16px sans-serif";
+      const hintTextWidth = this.screen.context.measureText(this._hintText).width;
+      const hintPosX = this.screen.canvas.width / 2 - hintTextWidth / 2;
+      const hintPosY = this.screen.canvas.height - 20;
+      this.screen.context.fillStyle = "white";
+      this.screen.context.fillText(this._hintText, hintPosX, hintPosY);
+    }
+
     this.screen.context.restore();
 
     if (this._opacity < 0) {
